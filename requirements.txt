@@ -1,7 +1,6 @@
-gradio
+joblib
+scikit-learn==1.6.1
 tensorflow
+gradio
 numpy
 pandas
-joblib
-scikit-learn
-h5py
