@@ -3,19 +3,23 @@ import numpy as np
 import tensorflow as tf
 import joblib
 
-# ==========================================================
+# =====================================================
 # Developed By : Parth
 # Roll No      : 241504
 # Course       : BCA - Data Science (3rd Year)
-# College      : Panipat Institute of Engineering & Technology
-# Project      : Breast Cancer Prediction using Deep Learning
-# ==========================================================
+# College      : Panipat Institute of Engineering & Technology, Samalkha
+# =====================================================
 
-# Load Model & Scaler
+# Load Model
 model = tf.keras.models.load_model("breast_cancer_model.h5")
+
+# Load Scaler
 scaler = joblib.load("breast_cancer_scaler.pkl")
 
+# -----------------------------------------------------
 # Feature Names
+# -----------------------------------------------------
+
 feature_names = [
     "Mean Radius",
     "Mean Texture",
@@ -46,11 +50,13 @@ feature_names = [
     "Worst Concavity",
     "Worst Concave Points",
     "Worst Symmetry",
-    "Worst Fractal Dimension",
+    "Worst Fractal Dimension"
 ]
 
-
+# -----------------------------------------------------
 # Prediction Function
+# -----------------------------------------------------
+
 def predict(*inputs):
 
     data = np.array(inputs).reshape(1, -1)
@@ -69,38 +75,41 @@ def predict(*inputs):
     else:
         result = "🟢 Benign (No Cancer Detected)"
         confidence = (1 - probability) * 100
-        color = "#00c853"
+        color = "#16a34a"
 
-    html = f"""
+    return f"""
     <div style="
-        background:{color};
-        padding:18px;
-        border-radius:12px;
-        color:white;
-        text-align:center;
-        font-size:22px;
-        font-weight:bold;">
-        {result}
-        <br><br>
-        Confidence : {confidence:.2f}%
+    background:{color};
+    color:white;
+    padding:25px;
+    border-radius:15px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    box-shadow:0px 5px 20px rgba(0,0,0,0.3);
+    ">
+
+    {result}
+
+    <br><br>
+
+    Confidence : {confidence:.2f}%
+
     </div>
     """
 
-    return html
+# -----------------------------------------------------
+# Custom CSS
+# -----------------------------------------------------
 
-
-# Custom Theme
 css = """
-body{
-    background:#0f172a;
-}
 
 .gradio-container{
     max-width:1200px !important;
 }
 
 footer{
-visibility:hidden;
+display:none !important;
 }
 
 h1{
@@ -109,17 +118,9 @@ text-align:center;
 
 """
 
-
-inputs = []
-
-for feature in feature_names:
-    inputs.append(
-        gr.Number(
-            label=feature,
-            value=0
-        )
-    )
-
+# -----------------------------------------------------
+# Build Interface
+# -----------------------------------------------------
 
 with gr.Blocks(css=css, theme=gr.themes.Soft()) as demo:
 
@@ -128,50 +129,63 @@ with gr.Blocks(css=css, theme=gr.themes.Soft()) as demo:
 
 ### Deep Learning Based Breast Cancer Detection
 
-Predict whether a tumor is **Benign** or **Malignant** using a trained Neural Network.
+Enter all 30 medical measurements and click **Predict**.
+
+This system predicts whether the tumor is **Benign** or **Malignant**.
 """)
+
+    inputs = []
 
     with gr.Row():
 
         with gr.Column():
-            gr.Markdown("## Enter Patient Details")
-            input_components = inputs
+
+            for feature in feature_names:
+                box = gr.Number(
+                    label=feature,
+                    value=0
+                )
+                inputs.append(box)
 
         with gr.Column():
-            gr.Markdown("## Prediction")
-            output = gr.HTML()
+
+            output = gr.HTML(label="Prediction")
 
             predict_btn = gr.Button(
-                "Predict",
-                variant="primary"
+                "🔍 Predict",
+                variant="primary",
+                size="lg"
             )
 
             clear_btn = gr.ClearButton(
-                input_components
+                components=inputs,
+                value="Clear"
             )
 
     predict_btn.click(
         fn=predict,
-        inputs=input_components,
+        inputs=inputs,
         outputs=output
     )
 
     gr.Markdown("""
+
 ---
 
-### 👨‍💻 Developed By
+## 👨‍💻 Developed By
 
-**Parth**
+### **Parth**
 
-**Roll No:** 241504
+**Roll No : 241504**
 
-**Course:** BCA - Data Science (3rd Year)
+**Course : BCA - Data Science (3rd Year)**
 
-**College:** Panipat Institute of Engineering & Technology (PIET), Samalkha
+**College : Panipat Institute of Engineering & Technology, Samalkha**
 
 ---
 
 © 2026 Breast Cancer Prediction System
+
 """)
 
 if _name_ == "_main_":
