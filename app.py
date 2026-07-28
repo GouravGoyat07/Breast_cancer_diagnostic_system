@@ -77,7 +77,7 @@ font-size:18px;
 margin-bottom:20px;
 }
 .card{
-background:white;
+background:black;
 padding:18px;
 border-radius:15px;
 margin-top:10px;
