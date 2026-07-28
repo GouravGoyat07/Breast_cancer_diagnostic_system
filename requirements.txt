@@ -1,6 +1,7 @@
-gradio
+gradio==5.38.2
+tensorflow-cpu==2.19.0
 numpy
 pandas
-scikit-learn==1.6.1
 joblib
-tensorflow
+scikit-learn
+h5py
