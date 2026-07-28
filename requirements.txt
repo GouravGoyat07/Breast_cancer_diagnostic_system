@@ -1,5 +1,5 @@
 gradio
-tensorflow-cpu
+tensorflow
 numpy
 pandas
 scikit-learn
