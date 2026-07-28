@@ -1,5 +1,5 @@
 gradio==5.38.2
-tensorflow-cpu==2.19.0
+tensorflow==2.19.0
 numpy
 pandas
 joblib
