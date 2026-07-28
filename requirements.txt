@@ -1,6 +1,7 @@
-joblib
-scikit-learn==1.6.1
-tensorflow
 gradio
+tensorflow==2.19.0
 numpy
 pandas
+scikit-learn
+joblib
+h5py
